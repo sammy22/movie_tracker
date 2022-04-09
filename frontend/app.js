@@ -1,5 +1,7 @@
 
 const express = require('express')
+const axios = require('axios');
+
 const app = express()
 var bodyParser = require('body-parser')
 var multer = require('multer');
@@ -45,7 +47,18 @@ app.post('/register', (req,res)=>{
         "password":pass
     }
     console.info(data)
-    // return res.redirect('signup_success.html');
+
+    axios.post('http://localhost:8080/signup', data)
+    .then(response =>{
+        console.log(response.status)
+        if (response.status==200){
+            return res.redirect('/');
+        }
+        } )
+    .catch(error => {
+        console.error('There was an error!', error);
+    });
+     
 })
 
 app.post('/signin', (req,res)=>{
@@ -58,6 +71,17 @@ app.post('/signin', (req,res)=>{
         "password":pass
     }
     console.info(data)
+
+    axios.post('http://localhost:8080/signin', data)
+    .then(response =>{
+        console.log(response.status)
+        if (response.status==200){
+            return res.render('search');
+        }
+        } )
+    .catch(error => {
+        console.error('There was an error!', error);
+    });
     // return res.redirect('signup_success.html');
 })
 

@@ -1,8 +1,15 @@
 package com.movietracker;
 
+import javax.persistence.*;
+
+@Entity
+@Table
 public class User {
+    @Id
     private String email; 
+
     private String password;
+
     private String name;
     
     public String getEmail() {

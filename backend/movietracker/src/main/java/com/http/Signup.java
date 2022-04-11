@@ -9,16 +9,19 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
+import org.hibernate.*;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import com.utils.*;
+
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/signup")
 public class Signup extends HttpServlet {
-
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
@@ -41,6 +44,12 @@ public class Signup extends HttpServlet {
             response.setContentType("what you need");
             PrintWriter writer=response.getWriter();
             writer.println("success");
+
+            // INSERT USER INTO DATABASE:
+            Session session = HibernateUtil.getSessionFactory().openSession();
+            session.beginTransaction();
+            session.save(userDetails);
+            session.getTransaction().commit();
             
         } catch ( Exception ex) {
           System.out.println(ex);

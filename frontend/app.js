@@ -27,12 +27,10 @@ app.get('', (req, res) => {
 })
 
 app.get('/signup', (req, res) => {
-    res.render('signup')
+    return res.render('signup',{message :'' });
 })
 
-app.get('/test', (req, res) => {
-    res.render('test')
-})
+
 
 app.post('/register', (req,res)=>{
     
@@ -46,17 +44,18 @@ app.post('/register', (req,res)=>{
         "email":email,
         "password":pass
     }
-    console.info(data)
 
     axios.post('http://localhost:8080/signup', data)
     .then(response =>{
-        console.log(response.status)
+        
         if (response.status==200){
             return res.redirect('/');
         }
         } )
     .catch(error => {
-        console.error('There was an error!', error);
+        // console.error('There was an error!', error);
+      
+        return res.render('signup',{message :'User already exists, Try again' });
     });
      
 })
@@ -84,5 +83,32 @@ app.post('/signin', (req,res)=>{
     });
     // return res.redirect('signup_success.html');
 })
+
+app.get('/movieList', (req, res) => {
+    let blogPosts = [
+        {
+            title: 'Perk is for real!',
+            body: '...',
+            author: 'Aaron Larner',
+            publishedAt: new Date('2016-03-19'),
+            createdAt: new Date('2016-03-19')
+        },
+        {
+            title: 'Development continues...',
+            body: '...',
+            author: 'Aaron Larner',
+            publishedAt: new Date('2016-03-18'),
+            createdAt: new Date('2016-03-18')
+        },
+        {
+            title: 'Welcome to Perk!',
+            body: '...',
+            author: 'Aaron Larner',
+            publishedAt: new Date('2016-03-17'),
+            createdAt: new Date('2016-03-17')
+        }
+    ]
+    res.render('movieList', { posts: blogPosts });
+});
 
 app.listen(port,  () => console.info("listening on ${port}"))

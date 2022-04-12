@@ -39,20 +39,20 @@ public class Signup extends HttpServlet {
             ObjectMapper objectMapper = new ObjectMapper();
             User userDetails = objectMapper.readValue(reqJson.toJSONString(),User.class);
             System.out.println(userDetails.getEmail());
-
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("what you need");
-            PrintWriter writer=response.getWriter();
-            writer.println("success");
-
+            userDetails.setPassword(Encrypt.hashPassword(userDetails.getPassword()));
             // INSERT USER INTO DATABASE:
             Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(userDetails);
             session.getTransaction().commit();
+
+            response.setStatus(HttpServletResponse.SC_OK);
+            response.setContentType("what you need");
+            PrintWriter writer=response.getWriter();
+            writer.println("success");
             
         } catch ( Exception ex) {
-          System.out.println(ex);
+          // System.out.println(ex);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             // respJson.put("answer", "Something bad happened");
             try (PrintWriter out = response.getWriter()) {

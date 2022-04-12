@@ -23,7 +23,7 @@ app.set('view engine', 'ejs')
 
 
 app.get('', (req, res) => {
-    res.render('index')
+    res.render('index', {message:'Sign In to your account'})
 })
 
 app.get('/signup', (req, res) => {
@@ -54,7 +54,6 @@ app.post('/register', (req,res)=>{
         } )
     .catch(error => {
         // console.error('There was an error!', error);
-      
         return res.render('signup',{message :'User already exists, Try again' });
     });
      
@@ -63,13 +62,11 @@ app.post('/register', (req,res)=>{
 app.post('/signin', (req,res)=>{
     var email =req.body.email;
     var pass = req.body.password;
-    
-  
+
     var data = {
         "email":email,
         "password":pass
     }
-    console.info(data)
 
     axios.post('http://localhost:8080/signin', data)
     .then(response =>{
@@ -79,9 +76,8 @@ app.post('/signin', (req,res)=>{
         }
         } )
     .catch(error => {
-        console.error('There was an error!', error);
+        return res.render('index',{message :'User Doesnt exist or wrong creds' });
     });
-    // return res.redirect('signup_success.html');
 })
 
 app.get('/movieList', (req, res) => {

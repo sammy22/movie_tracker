@@ -6,7 +6,10 @@ import java.io.Reader;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movietracker.User;
+import com.utils.Encrypt;
+import com.utils.HibernateUtil;
 
+import org.hibernate.Session;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -14,7 +17,6 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
@@ -27,6 +29,7 @@ public class Signin extends HttpServlet {
     System.out.println("Sign in post works!");
     JSONObject reqJson;
         JSONObject respJson = new JSONObject();
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             //get Reader from request
@@ -37,21 +40,32 @@ public class Signin extends HttpServlet {
             System.out.println(reqJson.toString());
             ObjectMapper objectMapper = new ObjectMapper();
             User userDetails = objectMapper.readValue(reqJson.toJSONString(),User.class);
-            System.out.println(userDetails.getEmail());
-
-            response.setStatus(HttpServletResponse.SC_OK);
-            response.setContentType("what you need");
-            PrintWriter writer=response.getWriter();
-            writer.println("success");
+            
+            session.beginTransaction();
+            User userExisting = (User) session.get(User.class, userDetails.getEmail());
+            
+            if(Encrypt.checkPass(userDetails.getPassword(), userExisting.getPassword())){
+              response.setStatus(HttpServletResponse.SC_OK);
+              PrintWriter writer=response.getWriter();
+              writer.println("success");
+            }else{
+              response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+              try (PrintWriter out = response.getWriter()) {
+                  out.println(respJson.toString());
+                  out.flush();
+              }
+            }
+            
             
         } catch ( Exception ex) {
-          System.out.println(ex);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             // respJson.put("answer", "Something bad happened");
             try (PrintWriter out = response.getWriter()) {
                 out.println(respJson.toString());
                 out.flush();
             }
+        } finally{
+          session.close();
         }
         
   }

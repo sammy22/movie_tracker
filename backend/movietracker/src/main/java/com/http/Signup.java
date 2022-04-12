@@ -28,6 +28,7 @@ public class Signup extends HttpServlet {
     System.out.println("Sign up post works!");
     JSONObject reqJson;
         JSONObject respJson = new JSONObject();
+        Session session = HibernateUtil.getSessionFactory().openSession();
 
         try {
             //get Reader from request
@@ -41,11 +42,10 @@ public class Signup extends HttpServlet {
             System.out.println(userDetails.getEmail());
             userDetails.setPassword(Encrypt.hashPassword(userDetails.getPassword()));
             // INSERT USER INTO DATABASE:
-            Session session = HibernateUtil.getSessionFactory().openSession();
             session.beginTransaction();
             session.save(userDetails);
             session.getTransaction().commit();
-
+            
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("what you need");
             PrintWriter writer=response.getWriter();
@@ -60,6 +60,10 @@ public class Signup extends HttpServlet {
                 out.flush();
             }
         }
+        finally{
+          session.close();
+        }
+        
         
   }
 }

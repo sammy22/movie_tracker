@@ -29,16 +29,23 @@
         <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
                 <form action="/search" , method="post">
-                    <div class="form"> <i class="fa fa-search"></i> <input type="text" id="query" name="query"
-                            class="form-control form-input" placeholder="Search by title or imdb id..."> 
-                            
-                            <span
-                            <div class="d-flex justify-content-center">
-                                <button type="submit" class="fa fa-file-video-o"></button>
-                            </div>
+                    
+                    <div class="form"> <i class="fa fa-search"></i> 
+                        
+                        
+                          
+                        
+                        <div class="input-group">
+                            <select class="form-control" id="type" name="type"  >
+                                <option>Movie</option>
+                                <option>TV</option>
+                              </select>
+                            <input type="text" id="query" name="query" class="form-control form-input" placeholder="Search by title or imdb id..."> 
                            
-                            </span>
-                            
+                            <button type="submit" class="btn btn-primary">
+                                search
+                              </button>
+                          </div>
                     </div>
                 </form>
             </div>

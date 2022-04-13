@@ -1,4 +1,5 @@
 package com.movietracker;
+
 import java.util.HashMap;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,49 +13,42 @@ import javax.persistence.Table;
 public class Movie {
 
     @Id
-    //@GeneratedValue(strategy=GenerationType.IDENTITY)  -> Ask Niraj
     private String movieID;
 
     private String movieName;
 
-    //private int categoryID;
-
     String description;
-
-    //String crewInfo;
-
-    //String releaseYear;
 
     String posterImage;
 
-    public Movie (String movieID, String movieName, String description,String posterImage ){
-        this.movieID=movieID;
-        this.movieName=movieName;
-        this.description=description;
-        this.posterImage=posterImage;
+    public Movie(String movieID, String movieName, String description, String posterImage) {
+        this.movieID = movieID;
+        this.movieName = movieName;
+        this.description = description;
+        this.posterImage = posterImage;
     }
 
     public String getMovieName() {
         return this.movieName;
     }
 
-    public String getMovieId(){
+    public String getMovieId() {
         return this.movieID;
     }
 
-     public String getDescription() {
+    public String getDescription() {
         return this.description;
     }
 
-    public String getPosterImage(){
+    public String getPosterImage() {
         return this.posterImage;
     }
 
-    public void getmovieInfo(){
+    public void getmovieInfo() {
         // to be implemented
     }
 
-    public void setMovieInfo(HashMap info){
+    public void setMovieInfo(HashMap info) {
         // to be implemented
     }
 

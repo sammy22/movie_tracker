@@ -28,9 +28,19 @@
     <div class="container">
         <div class="row height d-flex justify-content-center align-items-center">
             <div class="col-md-6">
-                <div class="form"> <i class="fa fa-search"></i> <input type="text" class="form-control form-input"
-                        placeholder="Search by title or imdb id..."> <span class="left-pan"><i class="fa fa-microphone"></i></span>
-                </div>
+                <form action="/search" , method="post">
+                    <div class="form"> <i class="fa fa-search"></i> <input type="text" id="query" name="query"
+                            class="form-control form-input" placeholder="Search by title or imdb id..."> 
+                            
+                            <span
+                            <div class="d-flex justify-content-center">
+                                <button type="submit" class="fa fa-file-video-o"></button>
+                            </div>
+                           
+                            </span>
+                            
+                    </div>
+                </form>
             </div>
         </div>
     </div>

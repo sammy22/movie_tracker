@@ -3,7 +3,6 @@ package com.movietracker;
 import java.net.URL;
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
-
 /**
  * Starts up a server that serves static files from the top-level directory.
  * 

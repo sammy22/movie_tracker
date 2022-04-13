@@ -80,7 +80,24 @@ app.post('/signin', (req,res)=>{
     });
 })
 
-app.get('/movieList', (req, res) => {
+app.post('/search', (req, res) => {
+    var query =req.body.query;
+    var data = {
+        "query":query
+    }
+    console.log(data)
+
+    axios.post('http://localhost:8080/search', data)
+    .then(response =>{
+        console.log(response.status)
+        if (response.status==200){
+            // return res.render('search');
+        }
+        } )
+    .catch(error => {
+        // return res.render('index',{message :'User Doesnt exist or wrong creds' });
+    });
+
     let blogPosts = [
         {
             title: 'Perk is for real!',

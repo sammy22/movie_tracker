@@ -20,8 +20,8 @@ import com.utils.*;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
-@WebServlet("/signup")
-public class Signup extends HttpServlet {
+@WebServlet("/search")
+public class Search extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
@@ -37,22 +37,20 @@ public class Signup extends HttpServlet {
             //parse our request to json
             reqJson = (JSONObject) parser.parse(reqReader);
             System.out.println(reqJson.toString());
-            ObjectMapper objectMapper = new ObjectMapper();
-            User userDetails = objectMapper.readValue(reqJson.toJSONString(),User.class);
-            System.out.println(userDetails.getEmail());
-            userDetails.setPassword(Encrypt.hashPassword(userDetails.getPassword()));
-            // INSERT USER INTO DATABASE:
-            session.beginTransaction();
-            session.save(userDetails);
-            session.getTransaction().commit();
+            String query = (String) reqJson.get("query");
             
+            SearchMovie s = new SearchMovie();
+            
+            
+            respJson.put("searchresults",s.getMovieList(query));
+
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("what you need");
             PrintWriter writer=response.getWriter();
             writer.println("success");
             
         } catch ( Exception ex) {
-          // System.out.println(ex);
+            System.out.println(ex);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             // respJson.put("answer", "Something bad happened");
             try (PrintWriter out = response.getWriter()) {

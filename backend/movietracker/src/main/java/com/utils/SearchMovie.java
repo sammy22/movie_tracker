@@ -1,20 +1,15 @@
-package com.http;
+package com.utils;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.io.Reader;
 
-import com.movietracker.User;
 import com.movietracker.Movie;
-import com.fasterxml.jackson.databind.ObjectMapper;
+
+
 
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.json.simple.parser.JSONParser;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
+
 import java.net.URI;
-import java.net.URL;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
@@ -22,13 +17,6 @@ import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Random;
 
 import org.hibernate.*;
-
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-
-import com.utils.*;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
@@ -48,20 +36,13 @@ public class SearchMovie {
       String apiKey = apiKeysList[rand.nextInt(apiKeysList.length)];
       String URL = "https://imdb-api.com/en/API/SearchMovie/" + apiKey + "/" + query;
       HttpRequest httprequest = HttpRequest.newBuilder().uri(URI.create(URL)).build();
-      System.out.println(client.sendAsync(httprequest, BodyHandlers.ofString())
-          .thenApply(HttpResponse::body));
-      // .thenApply(EndUser::parseJSON)
-      // .join());
-      String responseBody = client.sendAsync(httprequest, BodyHandlers.ofString())
-          .thenApply(HttpResponse::body).toString();
-     System.out.println(responseBody.toString());
+     
+      HttpResponse<String> response =client.send(httprequest, BodyHandlers.ofString());
+      System.out.println(response.statusCode());
+      
+    
+      JSONObject resp = new JSONObject(response.body());
 
-      JSONObject resp = new JSONObject(responseBody);
-      System.out.println(resp.toString());
-      if (!resp.getString("errorMessage").equals("")) {
-        throw new Exception(resp.getString("errorMessage"));
-      }
-      // start a transaction
       session.beginTransaction();
       JSONArray movieResultList = resp.getJSONArray("results");
       JSONArray searchResultArray = new JSONArray();
@@ -73,7 +54,7 @@ public class SearchMovie {
         String posterImage = movieResult.getString("image");
         System.out.println(movieId + " " + movieName + " " + description + " " + posterImage);
         Movie movie = new Movie(movieId, movieName, description, posterImage);
-        session.save(movie);
+        session.saveOrUpdate( movie);
         JSONObject movieFound = new JSONObject();
         movieFound.put("title", movieName);
         movieFound.put("description", description);

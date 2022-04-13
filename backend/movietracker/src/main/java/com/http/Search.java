@@ -4,19 +4,18 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 
-import com.movietracker.User;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.utils.HibernateUtil;
+import com.utils.SearchMovie;
+
+import org.hibernate.Session;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-
-import org.hibernate.*;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-
-import com.utils.*;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
@@ -36,18 +35,17 @@ public class Search extends HttpServlet {
             JSONParser parser = new JSONParser();
             //parse our request to json
             reqJson = (JSONObject) parser.parse(reqReader);
-            System.out.println(reqJson.toString());
             String query = (String) reqJson.get("query");
             
             SearchMovie s = new SearchMovie();
-            
-            
+           
+           
             respJson.put("searchresults",s.getMovieList(query));
-
+            
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("what you need");
             PrintWriter writer=response.getWriter();
-            writer.println("success");
+            writer.println(respJson.toString());
             
         } catch ( Exception ex) {
             System.out.println(ex);

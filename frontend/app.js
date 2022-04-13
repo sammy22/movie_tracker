@@ -30,6 +30,9 @@ app.get('/signup', (req, res) => {
     return res.render('signup',{message :'' });
 })
 
+app.get('/search', (req, res) => {
+    return res.render('search');
+})
 
 
 app.post('/register', (req,res)=>{
@@ -86,42 +89,21 @@ app.post('/search', (req, res) => {
         "query":query
     }
     console.log(data)
-
+    
     axios.post('http://localhost:8080/search', data)
     .then(response =>{
         console.log(response.status)
         if (response.status==200){
-            // return res.render('search');
+            
+            res.render('movieList', { posts: response.data.searchresults });
         }
         } )
     .catch(error => {
         // return res.render('index',{message :'User Doesnt exist or wrong creds' });
     });
 
-    let blogPosts = [
-        {
-            title: 'Perk is for real!',
-            body: '...',
-            author: 'Aaron Larner',
-            publishedAt: new Date('2016-03-19'),
-            createdAt: new Date('2016-03-19')
-        },
-        {
-            title: 'Development continues...',
-            body: '...',
-            author: 'Aaron Larner',
-            publishedAt: new Date('2016-03-18'),
-            createdAt: new Date('2016-03-18')
-        },
-        {
-            title: 'Welcome to Perk!',
-            body: '...',
-            author: 'Aaron Larner',
-            publishedAt: new Date('2016-03-17'),
-            createdAt: new Date('2016-03-17')
-        }
-    ]
-    res.render('movieList', { posts: blogPosts });
+   
+    
 });
 
 app.listen(port,  () => console.info("listening on ${port}"))

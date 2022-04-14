@@ -6,6 +6,7 @@ import java.io.Reader;
 
 import com.utils.HibernateUtil;
 import com.utils.SearchMovie;
+import com.utils.SearchTVShow;
 
 import org.hibernate.Session;
 import org.json.simple.JSONArray;
@@ -36,12 +37,18 @@ public class Search extends HttpServlet {
             //parse our request to json
             reqJson = (JSONObject) parser.parse(reqReader);
             String query = (String) reqJson.get("query");
-            
-            SearchMovie s = new SearchMovie();
+            String type = (String) reqJson.get("type");
+            if(type.equals("Movie")) {
+              SearchMovie s = new SearchMovie();          
            
+              respJson.put("searchresults",s.getMovieList(query));
+            }
+            else {
+              SearchTVShow s = new SearchTVShow();          
            
-            respJson.put("searchresults",s.getMovieList(query));
-            
+              respJson.put("searchresults",s.getTVShowList(query));
+            }
+        
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("what you need");
             PrintWriter writer=response.getWriter();

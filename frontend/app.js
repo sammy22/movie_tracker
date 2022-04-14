@@ -88,7 +88,6 @@ app.post('/search', (req, res) => {
         "query":req.body.query,
         "type":req.body.type,
     }
-    console.log(data)
     
     axios.post('http://localhost:8080/search', data)
     .then(response =>{
@@ -107,23 +106,24 @@ app.post('/search', (req, res) => {
 });
 
 
-app.get('/details', (req, res) => {
+app.post('/details', (req, res) => {
+    console.log(req.body)
     var data = {
-        "id":req.body.id
+        "mediaid":req.body.id
     }
-    console.log(data)
-    res.send({ foo : 'bar' });
-    // axios.post('http://localhost:8080/search', data)
-    // .then(response =>{
-    //     console.log(response.status)
-    //     if (response.status==200){
-    //         res.render('movieList', { posts: response.data.searchresults });
-    //     }
-    //     } )
-    // .catch(error => {
-    //     console.log(error);
-    //     return res.render('search');
-    // });  
+    
+    axios.post('http://localhost:8080/mediadetails', data)
+    .then(response =>{
+        console.log(response.status)
+        if (response.status==200){
+            res.send(response.data); 
+        }
+        } )
+    .catch(error => {
+        console.log(error);
+        return res.render('search');
+    }); 
+   
 });
 
 app.listen(port,  () => console.info("listening on ${port}"))

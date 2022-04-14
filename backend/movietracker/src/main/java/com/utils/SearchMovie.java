@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.movietracker.Movie;
 
-
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,7 +21,6 @@ import org.hibernate.*;
 public class SearchMovie {
 
   public JSONArray getMovieList(String query) throws IOException {
-    System.out.println("Searching for some meaning");
 
     Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -36,11 +33,9 @@ public class SearchMovie {
       String apiKey = apiKeysList[rand.nextInt(apiKeysList.length)];
       String URL = "https://imdb-api.com/en/API/SearchMovie/" + apiKey + "/" + query;
       HttpRequest httprequest = HttpRequest.newBuilder().uri(URI.create(URL)).build();
-     
-      HttpResponse<String> response =client.send(httprequest, BodyHandlers.ofString());
-      System.out.println(response.statusCode());
-      
-    
+
+      HttpResponse<String> response = client.send(httprequest, BodyHandlers.ofString());
+
       JSONObject resp = new JSONObject(response.body());
 
       session.beginTransaction();
@@ -52,9 +47,8 @@ public class SearchMovie {
         String movieName = movieResult.getString("title");
         String description = movieResult.getString("description");
         String posterImage = movieResult.getString("image");
-        System.out.println(movieId + " " + movieName + " " + description + " " + posterImage);
         Movie movie = new Movie(movieId, movieName, description, posterImage);
-        session.saveOrUpdate( movie);
+        session.saveOrUpdate(movie);
         JSONObject movieFound = new JSONObject();
         movieFound.put("title", movieName);
         movieFound.put("description", description);

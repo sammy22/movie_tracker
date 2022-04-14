@@ -26,47 +26,44 @@ public class Signin extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    System.out.println("Sign in post works!");
     JSONObject reqJson;
-        JSONObject respJson = new JSONObject();
-        Session session = HibernateUtil.getSessionFactory().openSession();
+    JSONObject respJson = new JSONObject();
+    Session session = HibernateUtil.getSessionFactory().openSession();
 
-        try {
-            //get Reader from request
-            Reader reqReader = request.getReader();
-            JSONParser parser = new JSONParser();
-            //parse our request to json
-            reqJson = (JSONObject) parser.parse(reqReader);
-            System.out.println(reqJson.toString());
-            ObjectMapper objectMapper = new ObjectMapper();
-            User userDetails = objectMapper.readValue(reqJson.toJSONString(),User.class);
-            
-            session.beginTransaction();
-            User userExisting = (User) session.get(User.class, userDetails.getEmail());
-            
-            if(Encrypt.checkPass(userDetails.getPassword(), userExisting.getPassword())){
-              response.setStatus(HttpServletResponse.SC_OK);
-              PrintWriter writer=response.getWriter();
-              writer.println("success");
-            }else{
-              response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-              try (PrintWriter out = response.getWriter()) {
-                  out.println(respJson.toString());
-                  out.flush();
-              }
-            }
-            
-            
-        } catch ( Exception ex) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            // respJson.put("answer", "Something bad happened");
-            try (PrintWriter out = response.getWriter()) {
-                out.println(respJson.toString());
-                out.flush();
-            }
-        } finally{
-          session.close();
+    try {
+      // get Reader from request
+      Reader reqReader = request.getReader();
+      JSONParser parser = new JSONParser();
+      // parse our request to json
+      reqJson = (JSONObject) parser.parse(reqReader);
+      ObjectMapper objectMapper = new ObjectMapper();
+      User userDetails = objectMapper.readValue(reqJson.toJSONString(), User.class);
+
+      session.beginTransaction();
+      User userExisting = (User) session.get(User.class, userDetails.getEmail());
+
+      if (Encrypt.checkPass(userDetails.getPassword(), userExisting.getPassword())) {
+        response.setStatus(HttpServletResponse.SC_OK);
+        PrintWriter writer = response.getWriter();
+        writer.println("success");
+      } else {
+        response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+        try (PrintWriter out = response.getWriter()) {
+          out.println(respJson.toString());
+          out.flush();
         }
-        
+      }
+
+    } catch (Exception ex) {
+      response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+      // respJson.put("answer", "Something bad happened");
+      try (PrintWriter out = response.getWriter()) {
+        out.println(respJson.toString());
+        out.flush();
+      }
+    } finally {
+      session.close();
+    }
+
   }
 }

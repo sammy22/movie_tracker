@@ -22,38 +22,36 @@ import jakarta.servlet.http.HttpServletResponse;
 
 @WebServlet("/search")
 public class Search extends HttpServlet {
-  @Override
-  public void doPost(HttpServletRequest request, HttpServletResponse response)
-      throws IOException {
-        System.out.println("Sign up post works!");
+    @Override
+    public void doPost(HttpServletRequest request, HttpServletResponse response)
+            throws IOException {
         JSONObject reqJson;
         JSONObject respJson = new JSONObject();
         Session session = HibernateUtil.getSessionFactory().openSession();
 
         try {
-            //get Reader from request
+            // get Reader from request
             Reader reqReader = request.getReader();
             JSONParser parser = new JSONParser();
-            //parse our request to json
+            // parse our request to json
             reqJson = (JSONObject) parser.parse(reqReader);
             String query = (String) reqJson.get("query");
             String type = (String) reqJson.get("type");
-            if(type.equals("Movie")) {
-              SearchMovie s = new SearchMovie();         
-              respJson.put("searchresults",s.getMovieList(query));
+            if (type.equals("Movie")) {
+                SearchMovie s = new SearchMovie();
+                respJson.put("searchresults", s.getMovieList(query));
+            } else {
+                SearchTVShow s = new SearchTVShow();
+
+                respJson.put("searchresults", s.getTVShowList(query));
             }
-            else {
-              SearchTVShow s = new SearchTVShow();          
-           
-              respJson.put("searchresults",s.getTVShowList(query));
-            }
-        
+
             response.setStatus(HttpServletResponse.SC_OK);
             response.setContentType("what you need");
-            PrintWriter writer=response.getWriter();
+            PrintWriter writer = response.getWriter();
             writer.println(respJson.toString());
-            
-        } catch ( Exception ex) {
+
+        } catch (Exception ex) {
             System.out.println(ex);
             response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
             // respJson.put("answer", "Something bad happened");
@@ -61,11 +59,9 @@ public class Search extends HttpServlet {
                 out.println(respJson.toString());
                 out.flush();
             }
+        } finally {
+            session.close();
         }
-        finally{
-          session.close();
-        }
-        
-        
-  }
+
+    }
 }

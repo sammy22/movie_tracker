@@ -4,8 +4,6 @@ import java.io.IOException;
 
 import com.movietracker.TVShow;
 
-
-
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -23,7 +21,6 @@ import org.hibernate.*;
 public class SearchTVShow {
 
   public JSONArray getTVShowList(String query) throws IOException {
-    System.out.println("Searching for some meaning");
 
     Session session = HibernateUtil.getSessionFactory().openSession();
 
@@ -36,11 +33,9 @@ public class SearchTVShow {
       String apiKey = apiKeysList[rand.nextInt(apiKeysList.length)];
       String URL = "https://imdb-api.com/en/API/SearchSeries/" + apiKey + "/" + query;
       HttpRequest httprequest = HttpRequest.newBuilder().uri(URI.create(URL)).build();
-     
-      HttpResponse<String> response =client.send(httprequest, BodyHandlers.ofString());
-      System.out.println(response.statusCode());
-      
-    
+
+      HttpResponse<String> response = client.send(httprequest, BodyHandlers.ofString());
+
       JSONObject resp = new JSONObject(response.body());
 
       session.beginTransaction();
@@ -52,13 +47,13 @@ public class SearchTVShow {
         String seriesName = seriesResult.getString("title");
         String description = seriesResult.getString("description");
         String posterImage = seriesResult.getString("image");
-        System.out.println(seriesId + " " + seriesName + " " + description + " " + posterImage);
-        TVShow tvshow= new TVShow(seriesId, seriesName, description, posterImage);
+        TVShow tvshow = new TVShow(seriesId, seriesName, description, posterImage);
         session.saveOrUpdate(tvshow);
         JSONObject seriesFound = new JSONObject();
         seriesFound.put("title", seriesName);
         seriesFound.put("description", description);
         seriesFound.put("image", posterImage);
+        seriesFound.put("id", seriesId);
         searchResultArray.put(seriesFound);
       }
       session.getTransaction().commit();

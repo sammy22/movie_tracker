@@ -2,63 +2,68 @@
 <html>
 
 <head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width,minimum-scale=1">
-    <title>Login</title>
-    <!-- the form awesome library is used to add icons to our form -->
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
-    <!-- include the stylesheet file -->
-    <link href="css/signup.css" rel="stylesheet" type="text/css">
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-        integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,minimum-scale=1">
+  <title>Login</title>
+  <!-- the form awesome library is used to add icons to our form -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.1/css/all.css">
+  <!-- include the stylesheet file -->
+  <link href="css/signup.css" rel="stylesheet" type="text/css">
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+    integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous" />
 </head>
 
 <body>
-    <section class="vh-100 bg-image" style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
-        <div class="mask d-flex align-items-center h-100 gradient-custom-3">
-          <div class="container h-100">
-            <div class="row d-flex justify-content-center align-items-center h-100">
-              <div class="col-12 col-md-9 col-lg-7 col-xl-6">
-                <div class="card" style="border-radius: 15px;">
-                  <div class="card-body p-5">
-                    <h2 class="text-uppercase text-center mb-5">Create an account</h2>
-                    <p class="card-text"><%= message %>.</p>
-                    <form action = "/register", method = "post">
-      
-                      <div class="form-outline mb-4">
-                        <input type="text" id="name" name="name" class="form-control form-control-lg" />
-                        <label class="form-label" for="name">Your Name</label>
-                      </div>
-      
-                      <div class="form-outline mb-4">
-                        <input type="email" id="email"  name="email" class="form-control form-control-lg" />
-                        <label class="form-label" for="email">Your Email</label>
-                      </div>
-      
-                      <div class="form-outline mb-4">
-                        <input type="password" id="password" name="password" c class="form-control form-control-lg" />
-                        <label class="form-label" for="password">Password</label>
-                      </div>
-                    
-      
-                      <div class="d-flex justify-content-center">
-                        <button type="submit" class="btn btn-success btn-block btn-lg gradient-custom-4 text-body" >Register</button>
-                      </div>
-      
-                      <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/" class="fw-bold text-body"><u>Login here</u></a></p>
-      
-                    </form>
+  <section class="vh-100 bg-image"
+    style="background-image: url('https://mdbcdn.b-cdn.net/img/Photos/new-templates/search-box/img4.webp');">
+    <div class="mask d-flex align-items-center h-100 gradient-custom-3">
+      <div class="container h-100">
+        <div class="row d-flex justify-content-center align-items-center h-100">
+          <div class="col-12 col-md-9 col-lg-7 col-xl-6">
+            <div class="card" style="border-radius: 15px;">
+              <div class="card-body p-5">
+                <h2 class="text-uppercase text-center mb-5">Create an account</h2>
+                <p class="card-text">
+                  <%= message %>.
+                </p>
+                <form action="/register" , method="post">
 
-                    
-      
+                  <div class="form-outline mb-4">
+                    <input type="text" id="name" name="name" class="form-control form-control-lg" />
+                    <label class="form-label" for="name">Your Name</label>
                   </div>
-                </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="email" id="email" name="email" class="form-control form-control-lg" />
+                    <label class="form-label" for="email">Your Email</label>
+                  </div>
+
+                  <div class="form-outline mb-4">
+                    <input type="password" id="password" name="password" c class="form-control form-control-lg" />
+                    <label class="form-label" for="password">Password</label>
+                  </div>
+
+
+                  <div class="d-flex justify-content-center">
+                    <button type="submit"
+                      class="btn btn-success btn-block btn-lg gradient-custom-4 text-body">Register</button>
+                  </div>
+
+                  <p class="text-center text-muted mt-5 mb-0">Have already an account? <a href="/"
+                      class="fw-bold text-body"><u>Login here</u></a></p>
+
+                </form>
+
+
+
               </div>
             </div>
           </div>
         </div>
-      </section>
+      </div>
+    </div>
+  </section>
 </body>
 
 </html>

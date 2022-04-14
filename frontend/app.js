@@ -84,9 +84,9 @@ app.post('/signin', (req,res)=>{
 })
 
 app.post('/search', (req, res) => {
-    var query =req.body.query;
     var data = {
-        "query":query
+        "query":req.body.query,
+        "type":req.body.type,
     }
     console.log(data)
     

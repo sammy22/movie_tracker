@@ -59,6 +59,7 @@ public class SearchMovie {
         movieFound.put("title", movieName);
         movieFound.put("description", description);
         movieFound.put("image", posterImage);
+        movieFound.put("id", movieId);
         searchResultArray.put(movieFound);
       }
       session.getTransaction().commit();

@@ -28,9 +28,21 @@
 
 <body>
 
-    <div class="background">
-        <div class="blur"></div>
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              
+            </div>
+            <div class="modal-body">
+              ...
+            </div>
+            
+          </div>
+        </div>
       </div>
+
         <div class="container-fluid">
 
         <div class="row row-cols-1 row-cols-md-3 g-3">
@@ -38,16 +50,13 @@
                 <div class="col">
 
                     <div class="card card-body flex-fill">
-                        <a href="/search">
+                        <a  onclick="myFunction(this.id)" id=<%=posts[i].id %>>
                         <img class="card-img-top" alt="..." style="width: 18rem;" src=<%=posts[i].image %> >
                         </a>
                         <div class="card-body">
                             <h5 class="card-title"><%= posts[i].title %></h5>
-                            <!-- <h4 class="d-inline-block">Edit Post</h4> -->
-                            <!-- <button type="button" class="btn btn-primary">Add New</button> -->
+                            
                             <p class="card-text"><%= posts[i].description %>.</p>
-                            <!-- <a href="#" class="fa fa-file-video-o"></a> -->
-                           
                         </div>
                     </div>
                 </div>
@@ -55,9 +64,30 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"
-        integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN"
-        crossorigin="anonymous"></script>
+    <script>
+            function myFunction(id) {
+                console.log(id)
+                $.ajax({
+                    type: "GET",
+                    url: "/details",
+                    data: { 
+                        id: id
+                    },
+                    success: function(result) {
+                        var data = result.body;
+                        console.log(result)
+                        $('.modal-body').text(result);
+                        $('#myModal').modal('show');
+                    },
+                    error: function(result) {
+                        alert('error');
+                    }
+                });
+            }
+    </script>
+    <script src="https://code.jquery.com/jquery-3.1.1.min.js"></script>
+
+
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.12.9/dist/umd/popper.min.js"
         integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
         crossorigin="anonymous"></script>

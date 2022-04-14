@@ -39,7 +39,6 @@ public class Search extends HttpServlet {
             
             SearchMovie s = new SearchMovie();
            
-           
             respJson.put("searchresults",s.getMovieList(query));
             
             response.setStatus(HttpServletResponse.SC_OK);

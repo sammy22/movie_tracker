@@ -94,16 +94,36 @@ app.post('/search', (req, res) => {
     .then(response =>{
         console.log(response.status)
         if (response.status==200){
-            
             res.render('movieList', { posts: response.data.searchresults });
         }
         } )
     .catch(error => {
-        // return res.render('index',{message :'User Doesnt exist or wrong creds' });
+        console.log(error);
+        return res.render('search');
     });
 
    
     
+});
+
+
+app.get('/details', (req, res) => {
+    var data = {
+        "id":req.body.id
+    }
+    console.log(data)
+    res.send({ foo : 'bar' });
+    // axios.post('http://localhost:8080/search', data)
+    // .then(response =>{
+    //     console.log(response.status)
+    //     if (response.status==200){
+    //         res.render('movieList', { posts: response.data.searchresults });
+    //     }
+    //     } )
+    // .catch(error => {
+    //     console.log(error);
+    //     return res.render('search');
+    // });  
 });
 
 app.listen(port,  () => console.info("listening on ${port}"))

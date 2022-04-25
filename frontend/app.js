@@ -174,7 +174,8 @@ app.get("/logout", (req, res) => {
 
 
 app.post('/details', (req, res) => {
-    // console.log(req.body)
+    console.log(req.body)
+    console.log(req.session)
     
     var data = {
         "mediaid": req.body.id
@@ -197,5 +198,37 @@ app.post('/details', (req, res) => {
     }
 
 });
+
+
+app.post('/addToWatchlist', (req, res) => {
+    console.log(req.body)
+    console.log(req.session)
+    
+    var data = {
+        "id": req.body.id,
+        "email":req.session.email
+    }
+    const sess = req.session;
+    console.log(data)
+    if (sess.email) {
+    axios.post('http://localhost:8080/addtowatchlist', data)
+        .then(response => {
+            console.log(response.status)
+            if (response.status == 200) {
+                res.send(response.data);
+            }
+        })
+        .catch(error => {
+            res.statusCode = 500;
+            res.send('failed')
+            console.log(error);
+        });
+    } else {
+        res.render('index', { message: 'Sign In to your account' })
+    }
+
+});
+
+
 
 app.listen(port, () => console.info("listening on 8000"))

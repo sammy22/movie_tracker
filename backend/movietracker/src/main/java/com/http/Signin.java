@@ -21,6 +21,8 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.ServletException;
 import com.movietracker.Observer.Publisher;
 
+import java.util.logging.Level;
+
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/signin")
@@ -36,9 +38,11 @@ public class Signin extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-
+      
     JSONObject reqJson;
     JSONObject respJson = new JSONObject();
+    
+    java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
     Session session = HibernateUtil.getSessionFactory().openSession();
 
     try {
@@ -58,6 +62,7 @@ public class Signin extends HttpServlet {
         PrintWriter writer = response.getWriter();
         writer.println("success");
         
+        // log 
         publisher.notify("User " + userDetails.getEmail() + " signed in");
 
       } else {

@@ -21,16 +21,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.ServletException;
 
-import org.eclipse.jetty.webapp.WebAppContext;
-import jakarta.servlet.ServletContext;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-import com.movietracker.Observer.*;
+import java.util.logging.Level;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/search")
 public class Search extends HttpServlet {
-    // DELETE
     private Publisher publisher;
 
     @Override
@@ -44,6 +40,8 @@ public class Search extends HttpServlet {
             throws IOException {
         JSONObject reqJson;
         JSONObject respJson = new JSONObject();
+
+        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
         Session session = HibernateUtil.getSessionFactory().openSession();
         
         try {
@@ -55,8 +53,9 @@ public class Search extends HttpServlet {
             String query = (String) reqJson.get("query");
             String type = (String) reqJson.get("type");
 
+            // log this search
             publisher.notify("User searched for " + query);
-            
+
             if (type.equals("Movie")) {
                 SearchMovie s = new SearchMovie();
                 respJson.put("searchresults", s.getMovieList(query));

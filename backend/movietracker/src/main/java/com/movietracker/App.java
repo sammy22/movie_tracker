@@ -18,7 +18,7 @@ import com.movietracker.Observer.*;
 public class App {
 
     public static void main(String[] args) throws Exception {
-        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.SEVERE);
+        java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
 
         // Create a server that listens on port 8080.
         Server server = new Server(8080);
@@ -39,7 +39,6 @@ public class App {
         Publisher p  = new Publisher(); 
 
         Log logger = Log.getInstance();
-        logger.open(1);
 
         p.attach(logger);
 

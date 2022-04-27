@@ -22,15 +22,30 @@ import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+
+import com.movietracker.Observer.*;
+
+import java.util.logging.Level;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/mediadetails")
 public class MediaDetails extends HttpServlet {
+  private Publisher publisher;
+
+  @Override
+  public void init() throws ServletException
+  {
+      this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
     JSONObject reqJson;
+
+    java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
     Session session = HibernateUtil.getSessionFactory().openSession();
 
     try {
@@ -53,6 +68,8 @@ public class MediaDetails extends HttpServlet {
       ObjectMapper objectMapper = new ObjectMapper();
 
       MovieDetails details = objectMapper.readValue(httpresponse.body().toString(), MovieDetails.class);
+
+      publisher.notify("Viewed media details for media ID: " + mediaID);
 
       String respJson = objectMapper.writeValueAsString(details);
       response.setStatus(HttpServletResponse.SC_OK);

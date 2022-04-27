@@ -172,6 +172,30 @@ app.get("/logout", (req, res) => {
     });
 });
 
+app.get("/watchlist", (req, res) => {
+    var data = {
+        "query": "love",
+        "type": "movie",
+    }
+    const sess = req.session;
+    console.log(sess)
+    if (sess.email) {
+    axios.post('http://localhost:8080/search', data)
+        .then(response => {
+            console.log(response.status)
+            if (response.status == 200) {
+                res.render('watchlist', { posts: response.data.searchresults });
+            }
+        })
+        .catch(error => {
+            console.log(error);
+            return res.render('search');
+        });
+    } else {
+        res.render('index', { message: 'Sign In to your account' })
+    }
+});
+
 
 app.post('/details', (req, res) => {
     console.log(req.body)
@@ -222,6 +246,36 @@ app.post('/addToWatchlist', (req, res) => {
             res.statusCode = 500;
             res.send('failed')
             console.log(error);
+        });
+    } else {
+        res.render('index', { message: 'Sign In to your account' })
+    }
+
+});
+
+
+
+app.post('/review', (req, res) => {
+    
+    var data = {
+        "ratings": req.body.rating,
+        "email" : req.session.email,
+        "comments":req.body.comments
+    }
+    const sess = req.session;
+    console.log(data)
+    if (sess.email) {
+    axios.post('http://localhost:8080/addreview', data)
+        .then(response => {
+            console.log(response.status)
+            if (response.status == 200) {
+                res.send(response.data);
+            }
+        })
+        .catch(error => {
+            
+            console.log(error);
+            res.status(204).send();
         });
     } else {
         res.render('index', { message: 'Sign In to your account' })

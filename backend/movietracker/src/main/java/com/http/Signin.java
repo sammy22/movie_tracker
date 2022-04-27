@@ -18,14 +18,25 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import jakarta.servlet.ServletException;
+import com.movietracker.Observer.Publisher;
+
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/signin")
 public class Signin extends HttpServlet {
+  private Publisher publisher;
+
+  @Override
+  public void init() throws ServletException
+  {
+      this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+  }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
+
     JSONObject reqJson;
     JSONObject respJson = new JSONObject();
     Session session = HibernateUtil.getSessionFactory().openSession();
@@ -46,6 +57,9 @@ public class Signin extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter writer = response.getWriter();
         writer.println("success");
+        
+        publisher.notify("User " + userDetails.getEmail() + " signed in");
+
       } else {
         response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
         try (PrintWriter out = response.getWriter()) {

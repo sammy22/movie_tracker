@@ -5,6 +5,10 @@ import java.util.logging.Level;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
+import jakarta.servlet.ServletContext;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+
+import com.movietracker.Observer.*;
 
 /**
  * Starts up a server that serves static files from the top-level directory.
@@ -31,7 +35,19 @@ public class App {
         webAppContext.setAttribute(
                 "org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
                 ".*/target/classes/|.*\\.jar");
+        
+        Publisher p  = new Publisher(); 
 
+        Log logger = Log.getInstance();
+        logger.open(1);
+
+        p.attach(logger);
+
+        webAppContext.setAttribute(
+                "publisher",
+                p);
+        
+  
         // Start the server! 🚀
         server.start();
         System.out.println("Server started!");

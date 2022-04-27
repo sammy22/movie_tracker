@@ -13,22 +13,39 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.movietracker.Observer.Publisher;
+
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.ServletException;
+
+import org.eclipse.jetty.webapp.WebAppContext;
+import jakarta.servlet.ServletContext;
+import org.eclipse.jetty.servlet.ServletContextHandler;
+import com.movietracker.Observer.*;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/search")
 public class Search extends HttpServlet {
+    // DELETE
+    private Publisher publisher;
+
+    @Override
+    public void init() throws ServletException
+    {
+        this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+    }
+    
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
         JSONObject reqJson;
         JSONObject respJson = new JSONObject();
         Session session = HibernateUtil.getSessionFactory().openSession();
-
+        
         try {
             // get Reader from request
             Reader reqReader = request.getReader();
@@ -37,6 +54,9 @@ public class Search extends HttpServlet {
             reqJson = (JSONObject) parser.parse(reqReader);
             String query = (String) reqJson.get("query");
             String type = (String) reqJson.get("type");
+
+            publisher.notify("User searched for " + query);
+            
             if (type.equals("Movie")) {
                 SearchMovie s = new SearchMovie();
                 respJson.put("searchresults", s.getMovieList(query));

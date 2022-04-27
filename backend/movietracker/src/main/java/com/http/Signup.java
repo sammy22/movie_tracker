@@ -17,11 +17,20 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import com.utils.*;
+import com.movietracker.Observer.Publisher;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/signup")
 public class Signup extends HttpServlet {
+  private Publisher publisher;
+
+  @Override
+  public void init() throws ServletException
+  {
+      this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+  }
+
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
@@ -47,6 +56,8 @@ public class Signup extends HttpServlet {
       response.setContentType("what you need");
       PrintWriter writer = response.getWriter();
       writer.println("success");
+
+      publisher.notify("User " + userDetails.getEmail() + " signed up");
 
     } catch (Exception ex) {
       System.out.println(ex);

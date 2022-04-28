@@ -28,7 +28,7 @@ import com.movietracker.Observer.*;
 
 import java.util.logging.Level;
 
-// Code from https://happycoding.io/tutorials/java-server/post
+// Code modified from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/mediadetails")
 public class MediaDetails extends HttpServlet {
@@ -43,6 +43,9 @@ public class MediaDetails extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
+    
+    publisher.notify("Media details post request");
+
     JSONObject reqJson;
 
     java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);

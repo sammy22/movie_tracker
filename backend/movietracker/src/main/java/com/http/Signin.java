@@ -23,7 +23,7 @@ import com.movietracker.Observer.Publisher;
 
 import java.util.logging.Level;
 
-// Code from https://happycoding.io/tutorials/java-server/post
+// Code modified from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/signin")
 public class Signin extends HttpServlet {

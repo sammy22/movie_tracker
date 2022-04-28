@@ -50,10 +50,11 @@ public class AddWatchList extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
+
     JSONObject reqJson;
     JSONObject respJson = new JSONObject();
-
-    java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
+    
+    java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF); 
     Session session = HibernateUtil.getSessionFactory().openSession();
 
     try {

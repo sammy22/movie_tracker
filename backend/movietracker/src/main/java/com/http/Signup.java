@@ -21,7 +21,8 @@ import com.utils.*;
 import com.movietracker.Observer.Publisher;
 
 import java.util.logging.Level;
-// Code from https://happycoding.io/tutorials/java-server/post
+
+// Code modified from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/signup")
 public class Signup extends HttpServlet {
@@ -36,6 +37,9 @@ public class Signup extends HttpServlet {
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
+    
+    publisher.notify("Signup post request");
+
     JSONObject reqJson;
     JSONObject respJson = new JSONObject();
 

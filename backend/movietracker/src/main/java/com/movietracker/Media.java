@@ -11,14 +11,28 @@ import javax.persistence.Table;
 public class Media {
 
     @Id
-    private String mediaID;
+    private String mediaId;
 
     private String mediaName;
 
 
+    public Media(){}
+ 
 
-    public Media(String mediaID, String mediaName) {
-        this.mediaID = mediaID;
+    public String getMediaId() {
+        return mediaId;
+    }
+
+    public void setMediaId(String mediaId) {
+        this.mediaId = mediaId;
+    }
+
+    public void setMediaName(String mediaName) {
+        this.mediaName = mediaName;
+    }
+
+    public Media(String mediaId, String mediaName) {
+        this.mediaId = mediaId;
         this.mediaName = mediaName;
         
     }

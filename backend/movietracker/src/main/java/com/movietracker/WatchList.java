@@ -1,52 +1,47 @@
 package com.movietracker;
 
+import java.io.Serializable;
 import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
-@Table
-public class WatchList {
+@Table(name = "WatchList")
+public class WatchList implements Serializable{
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "email")
     private User user;
 
   
-  
-    @Id
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mediaId")
-    private Set<Media> watchList;
+    private Media media;
 
-    public WatchList( User user, Set<Media> watchList){
+    public WatchList( User user, Media media){
         this.user=user;
-        this.watchList= watchList;
+        this.media= media;
     }
 
-	public Set<Media> getWatchList() {
-		return watchList;
-	}
+    public User getUser() {
+        return user;
+    }
 
-	public boolean addToWatchList(Media media) {
-		
-        if (watchList.contains(media)) {
-            // What do you want me to do?
-            return false;
-        }
-        else {
-            watchList.add(media);
-            return true;
-        }
-        
-	}
+    public void setUser(User user) {
+        this.user = user;
+    }
 
+    public Media getMedia() {
+        return media;
+    }
 
+    public void setMedia(Media media) {
+        this.media = media;
+    }
 
-
-
-
-   
-
+	
 }

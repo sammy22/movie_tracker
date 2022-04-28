@@ -229,7 +229,7 @@ app.post('/addToWatchlist', (req, res) => {
     console.log(req.session)
     
     var data = {
-        "id": req.body.id,
+        "mediaid": req.body.id,
         "email":req.session.email
     }
     const sess = req.session;

@@ -1,19 +1,22 @@
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Log.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/utils/DAO.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Consumer.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/utils/HibernateUtil.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/http/Signin.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Tracker.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/utils/SearchMovie.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Movie.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/TVShow.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/MovieDetails.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Publisher.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/utils/Encrypt.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/http/Signup.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/utils/SearchTVShow.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/http/MediaDetails.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/http/Search.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/User.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Subject.java
-/Users/joshuasun/Documents/Spring 2022/ObjOriented/movie_tracker/backend/movietracker/src/main/java/com/movietracker/App.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Media.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/User.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/http/Signin.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/WatchList.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Movie.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/http/MediaDetails.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Consumer.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/utils/SearchMovie.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/utils/HibernateUtil.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/utils/SearchTVShow.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Publisher.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Log.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/App.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/http/Signup.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/TVShow.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/utils/Encrypt.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/utils/DAO.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Tracker.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/Observer/Subject.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/http/Search.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/movietracker/MovieDetails.java
+/Users/niraj/Desktop/ooad/projects/P6/movie_tracker/backend/movietracker/src/main/java/com/http/AddWatchList.java

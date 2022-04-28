@@ -3,7 +3,7 @@ package com.utils;
 import java.io.IOException;
 
 import com.movietracker.Movie;
-
+import com.movietracker.Media;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
@@ -48,7 +48,9 @@ public class SearchMovie {
         String movieName = movieResult.getString("title");
         String description = movieResult.getString("description");
         String posterImage = movieResult.getString("image");
+        Media media =new Media (movieId, movieName);
         Movie movie = new Movie(movieId, movieName, description, posterImage);
+        session.saveOrUpdate(media);
         session.saveOrUpdate(movie);
         JSONObject movieFound = new JSONObject();
         movieFound.put("title", movieName);

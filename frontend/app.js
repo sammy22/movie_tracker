@@ -173,17 +173,18 @@ app.get("/logout", (req, res) => {
 });
 
 app.get("/watchlist", (req, res) => {
-    var data = {
-        "query": "love",
-        "type": "movie",
-    }
+   
     const sess = req.session;
-    console.log(sess)
+    
     if (sess.email) {
-    axios.post('http://localhost:8080/search', data)
+        var data = {
+            "email":sess.email
+        }
+    axios.post('http://localhost:8080/getwatchlist', data)
         .then(response => {
             console.log(response.status)
             if (response.status == 200) {
+                console.log(response.data)
                 res.render('watchlist', { posts: response.data.searchresults });
             }
         })

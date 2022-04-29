@@ -29,6 +29,7 @@
      <mapping class="com.movietracker.TVShow"/>
      <mapping class="com.movietracker.Media"/>
      <mapping class="com.movietracker.WatchList"/>
+     <mapping class="com.movietracker.Review"/>
 
 </session-factory>
 </hibernate-configuration>

@@ -9,17 +9,21 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movietracker.Media;
+import com.movietracker.Movie;
+import com.movietracker.TVShow;
 import com.movietracker.User;
 import com.movietracker.WatchList;
 import com.utils.HibernateUtil;
 
 import org.hibernate.Session;
 import org.hibernate.query.Query;
+import org.json.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -37,8 +41,8 @@ import java.util.logging.Level;
 
 // Code from https://happycoding.io/tutorials/java-server/post
 
-@WebServlet("/addtowatchlist")
-public class AddWatchList extends HttpServlet {
+@WebServlet("/getwatchlist")
+public class GetWatchList extends HttpServlet {
   private Publisher publisher;
 
   @Override
@@ -63,54 +67,52 @@ public class AddWatchList extends HttpServlet {
       JSONParser parser = new JSONParser();
       // parse our request to json
       reqJson = (JSONObject) parser.parse(reqReader);
-      String mediaId = (String) reqJson.get("mediaid");
       String email = (String) reqJson.get("email");
 
 
-      publisher.notify("Adding" + mediaId +" to the watchlist of " + email);
+      publisher.notify("Retrieving the watchlist of " + email);
       
-      String hql = "select * from WatchList w where w.email = :email and w.mediaId=:mediaId";
+      String hql = "select w from WatchList w where w.email = :email";
       Query q = session.createSQLQuery(hql);
       q.setParameter("email", email);
-      q.setParameter("mediaId", mediaId);
 
-      // System.out.println("vefore");
 
-      // System.out.println(q.uniqueResult());
-      // System.out.println("after");
-
-      if (q.uniqueResult() != null) {
-        WatchList w = (WatchList) q.uniqueResult();
-        respJson.put("msg", "Already present in the WatchList");
+      JSONArray searchResultArray = new JSONArray();  
+      if (q.uniqueResult() == null) {
+        respJson.put("msg", "Empty WatchList. Start Adding stuff !");
       }
+      
       else {
-        String hql1 = "select  u from User u where u.email ='"+email+"'";
-        Query q1 = session.createQuery(hql1);
-        // q1.setParameter("email", email);
-        System.out.println(q1.uniqueResult().toString());
-        if(q1.list().size()==0){
-          respJson.put("msg", "user doesn't exist");
-          throw new Exception("User not found");
+        List<WatchList> mediaList=(List<WatchList>) q.list();
+        for ( WatchList w : mediaList){
+
+            String mediaId = w.getMedia().getMediaId();
+            String hql1 = "select m from Movie m where m.movieID ='"+mediaId+"'";
+            Query q1 = session.createQuery(hql1);
+            if (q1.uniqueResult() == null) {
+                String hql2 = "select t from TVShow t where t.seriesID ='"+mediaId+"'";
+                Query q2 = session.createQuery(hql2);
+                TVShow t = (TVShow) q2.uniqueResult();
+                JSONObject mediaFound = new JSONObject();
+                mediaFound.put("title", t.getSeriesName());
+                mediaFound.put("description", t.getDescription());
+                mediaFound.put("image", t.getPosterImage());
+                mediaFound.put("id", mediaId);
+                searchResultArray.put(mediaFound);
+            }
+            else {
+                Movie m = (Movie) q1.uniqueResult();
+                JSONObject mediaFound = new JSONObject();
+                mediaFound.put("title", m.getMovieName());
+                mediaFound.put("description", m.getDescription());
+                mediaFound.put("image", m.getPosterImage());
+                mediaFound.put("id", mediaId);
+                searchResultArray.put(mediaFound);
+                System.out.println(q1.uniqueResult().toString());
+            }
+            
         }
-
-        User user = (User) q1.list().get(0);  
-        String hql2 = "select m from Media m where m.mediaId='"+mediaId+"'";
-        System.out.println(hql2);
-        Query q2 = session.createQuery(hql2);
-
-        if(q2.list().size()==0){
-          respJson.put("msg", "mediaId doesn't exist");
-          throw new Exception("ID not found");
-        }
-
-        Media media= (Media) q2.list().get(0);
-        System.out.print("tests");
-        WatchList w = new WatchList(user,media);
-        System.out.println(w.toString());
-        session.saveOrUpdate(w);
-        System.out.println("save");
-        respJson.put("successmsg", "Successfully added to the WatchList");
-
+        respJson.put("watchlistresults", searchResultArray);
       }
       
       

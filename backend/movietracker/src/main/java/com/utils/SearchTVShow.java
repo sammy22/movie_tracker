@@ -14,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 import java.util.Random;
+import org.hibernate.query.Query;
 
 import org.hibernate.*;
 
@@ -48,16 +49,31 @@ public class SearchTVShow {
         String seriesName = seriesResult.getString("title");
         String description = seriesResult.getString("description");
         String posterImage = seriesResult.getString("image");
-        Media media =new Media (seriesId, seriesName);
-        TVShow tvshow = new TVShow(seriesId, seriesName, description, posterImage);
-        session.saveOrUpdate(media);
-        session.saveOrUpdate(tvshow);
-        JSONObject seriesFound = new JSONObject();
-        seriesFound.put("title", seriesName);
-        seriesFound.put("description", description);
-        seriesFound.put("image", posterImage);
-        seriesFound.put("id", seriesId);
-        searchResultArray.put(seriesFound);
+        String hql = "select m from Media m where m.mediaId='"+seriesId+"'";
+        System.out.println(hql);
+        Query q = session.createQuery(hql);
+        if (q.uniqueResult() == null) {
+
+          Media media =new Media (seriesId, seriesName);
+          TVShow tvshow = new TVShow(seriesId, seriesName, description, posterImage);
+          session.saveOrUpdate(media);
+          session.saveOrUpdate(tvshow);
+          JSONObject seriesFound = new JSONObject();
+          seriesFound.put("title", seriesName);
+          seriesFound.put("description", description);
+          seriesFound.put("image", posterImage);
+          seriesFound.put("id", seriesId);
+          searchResultArray.put(seriesFound);
+        }
+        else {
+          TVShow t= (TVShow) q.list().get(0);
+          JSONObject seriesFound = new JSONObject();
+          seriesFound.put("title", t.getSeriesName());
+          seriesFound.put("description", t.getDescription());
+          seriesFound.put("image", t.getPosterImage());
+          seriesFound.put("id", seriesId);
+          searchResultArray.put(seriesFound);
+        }
       }
       session.getTransaction().commit();
 

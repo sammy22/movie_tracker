@@ -12,7 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
-
+import org.hibernate.query.Query;
 import java.util.Random;
 
 import org.hibernate.*;
@@ -48,16 +48,31 @@ public class SearchMovie {
         String movieName = movieResult.getString("title");
         String description = movieResult.getString("description");
         String posterImage = movieResult.getString("image");
-        Media media =new Media (movieId, movieName);
-        Movie movie = new Movie(movieId, movieName, description, posterImage);
-        session.saveOrUpdate(media);
-        session.saveOrUpdate(movie);
-        JSONObject movieFound = new JSONObject();
-        movieFound.put("title", movieName);
-        movieFound.put("description", description);
-        movieFound.put("image", posterImage);
-        movieFound.put("id", movieId);
-        searchResultArray.put(movieFound);
+        String hql = "select m from Media m where m.mediaId='"+movieId+"'";
+        System.out.println(hql);
+        Query q = session.createQuery(hql);
+        if (q.uniqueResult() == null) {
+
+          Media media =new Media (movieId, movieName);
+          Movie movie = new Movie(movieId, movieName, description, posterImage);
+          session.saveOrUpdate(media);
+          session.saveOrUpdate(movie);
+          JSONObject movieFound = new JSONObject();
+          movieFound.put("title", movieName);
+          movieFound.put("description", description);
+          movieFound.put("image", posterImage);
+          movieFound.put("id", movieId);
+          searchResultArray.put(movieFound);
+        }
+        else {
+          Movie m= (Movie) q.list().get(0);
+          JSONObject movieFound = new JSONObject();
+          movieFound.put("title", m.getMovieName());
+          movieFound.put("description", m.getDescription());
+          movieFound.put("image", m.getPosterImage());
+          movieFound.put("id", movieId);
+          searchResultArray.put(movieFound);
+        }
       }
       session.getTransaction().commit();
 

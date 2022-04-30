@@ -9,10 +9,8 @@ import com.utils.SearchMovie;
 import com.utils.SearchTVShow;
 
 import org.hibernate.Session;
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.movietracker.Observer.Publisher;
 
 import jakarta.servlet.annotation.WebServlet;
@@ -30,11 +28,10 @@ public class Search extends HttpServlet {
     private Publisher publisher;
 
     @Override
-    public void init() throws ServletException
-    {
+    public void init() throws ServletException {
         this.publisher = (Publisher) getServletContext().getAttribute("publisher");
     }
-    
+
     @Override
     public void doPost(HttpServletRequest request, HttpServletResponse response)
             throws IOException {
@@ -43,7 +40,7 @@ public class Search extends HttpServlet {
 
         java.util.logging.Logger.getLogger("org.hibernate").setLevel(Level.OFF);
         Session session = HibernateUtil.getSessionFactory().openSession();
-        
+
         try {
             // get Reader from request
             Reader reqReader = request.getReader();
@@ -61,7 +58,6 @@ public class Search extends HttpServlet {
                 respJson.put("searchresults", s.getMovieList(query));
             } else {
                 SearchTVShow s = new SearchTVShow();
-
                 respJson.put("searchresults", s.getTVShowList(query));
             }
 

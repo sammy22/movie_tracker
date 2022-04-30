@@ -29,15 +29,14 @@ public class Signup extends HttpServlet {
   private Publisher publisher;
 
   @Override
-  public void init() throws ServletException
-  {
-      this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+  public void init() throws ServletException {
+    this.publisher = (Publisher) getServletContext().getAttribute("publisher");
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    
+
     publisher.notify("Signup post request");
 
     JSONObject reqJson;

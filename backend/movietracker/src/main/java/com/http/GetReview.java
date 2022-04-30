@@ -4,12 +4,6 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.Reader;
 
-import java.util.List;
-
-
-
-import com.movietracker.Review;
-
 import com.utils.HibernateUtil;
 
 import org.hibernate.Session;
@@ -28,8 +22,6 @@ import com.movietracker.Observer.*;
 
 import java.util.logging.Level;
 
-
-
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/getreview")
@@ -37,9 +29,8 @@ public class GetReview extends HttpServlet {
   private Publisher publisher;
 
   @Override
-  public void init() throws ServletException
-  {
-      this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+  public void init() throws ServletException {
+    this.publisher = (Publisher) getServletContext().getAttribute("publisher");
   }
 
   @Override
@@ -61,43 +52,35 @@ public class GetReview extends HttpServlet {
       String mediaId = (String) reqJson.get("mediaid");
       String email = (String) reqJson.get("email");
 
-
-
       publisher.notify("Checking if " + email + "  has reviewed  " + mediaId);
-      
-      String hql = "select r from Review r where r.email = :email and r.mediaId=:mediaId";
+
+      String hql = "select * from Review r where r.email = '" + email + "' and r.mediaId='" + mediaId + "'";
       Query q = session.createSQLQuery(hql);
-      q.setParameter("email", email);
-      q.setParameter("mediaId", mediaId);
 
       if (q.uniqueResult() != null) {
-        Review r = (Review) q.uniqueResult();
+        Object[] r = (Object[]) q.uniqueResult();
         JSONObject userReview = new JSONObject();
         userReview.put("isreviewed", true);
-        userReview.put("title", r.getTitle());
-        userReview.put("description", r.getDescription());
-        userReview.put("rating", r.getRating());
+        userReview.put("title", (String) r[3]);
+        userReview.put("description", (String) r[4]);
+        userReview.put("rating", (Double) r[5]);
         respJson.put("userreview", userReview);
-        
+
       }
       publisher.notify("Retrieving random reviews for " + mediaId);
-      String hql1 = "select  r from Review r where r.mediaId=:mediaId order by rand() limit 3";
+      String hql1 = "select * from Review r where r.mediaId='" + mediaId + "'" + " and email!='" + email + "'"
+          + " limit 3";
       Query q1 = session.createSQLQuery(hql1);
-      q1.setParameter("mediaId", mediaId);
-
-      List<Review>  reviewList = (List<Review>) q1.list();
       JSONArray reviewResultsArray = new JSONArray();
-      for ( Review r : reviewList) {
+      for (Object o : q1.list()) {
+        Object[] data = (Object[]) o;
         JSONObject review = new JSONObject();
-        review.put("title", r.getTitle());
-        review.put("description", r.getDescription());
-        review.put("rating", r.getRating());
+        review.put("title", (String) data[3]);
+        review.put("description", (String) data[4]);
+        review.put("rating", (Double) data[5]);
         reviewResultsArray.put(review);
       }
       respJson.put("reviewlist", reviewResultsArray);
-      
-      
-      
 
     } catch (Exception ex) {
       System.out.println(ex);

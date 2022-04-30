@@ -2,10 +2,10 @@ package com.utils;
 
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
- 
+
 // code is from: http://www.mastertheboss.com/hibernate-jpa/maven-hibernate-jpa/maven-and-hibernate-4-tutorial/
 public class HibernateUtil {
- 
+
     private static final SessionFactory sessionFactory = buildSessionFactory();
 
     private static SessionFactory buildSessionFactory() {
@@ -18,14 +18,14 @@ public class HibernateUtil {
             throw new ExceptionInInitializerError(ex);
         }
     }
- 
+
     public static SessionFactory getSessionFactory() {
         return sessionFactory;
     }
- 
+
     public static void shutdown() {
         // Close caches and connection pools
         getSessionFactory().close();
     }
- 
+
 }

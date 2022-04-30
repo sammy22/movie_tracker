@@ -49,12 +49,11 @@ public class SearchTVShow {
         String seriesName = seriesResult.getString("title");
         String description = seriesResult.getString("description");
         String posterImage = seriesResult.getString("image");
-        String hql = "select m from Media m where m.mediaId='"+seriesId+"'";
-        System.out.println(hql);
+        String hql = "select m from Media m where m.mediaId='" + seriesId + "'";
         Query q = session.createQuery(hql);
         if (q.uniqueResult() == null) {
 
-          Media media =new Media (seriesId, seriesName);
+          Media media = new Media(seriesId, seriesName);
           TVShow tvshow = new TVShow(seriesId, seriesName, description, posterImage);
           session.saveOrUpdate(media);
           session.saveOrUpdate(tvshow);
@@ -64,9 +63,10 @@ public class SearchTVShow {
           seriesFound.put("image", posterImage);
           seriesFound.put("id", seriesId);
           searchResultArray.put(seriesFound);
-        }
-        else {
-          TVShow t= (TVShow) q.list().get(0);
+        } else {
+          String mvl = "select m from TVShow m where m.seriesID='" + seriesId + "'";
+          Query qvl = session.createQuery(mvl);
+          TVShow t = (TVShow) qvl.list().get(0);
           JSONObject seriesFound = new JSONObject();
           seriesFound.put("title", t.getSeriesName());
           seriesFound.put("description", t.getDescription());

@@ -2,12 +2,11 @@ package com.movietracker;
 
 import java.io.Serializable;
 
-
 import javax.persistence.*;
 
 @Entity
 @Table(name = "Review")
-public class Review implements Serializable{
+public class Review implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -25,21 +24,13 @@ public class Review implements Serializable{
     @JoinColumn(name = "email")
     private User user;
 
-  
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mediaId")
     private Media media;
 
     private String title;
-    
-    @Lob
     private String description;
-
     private double rating;
-
-	
-
-
 
     /**
      * @return String return the title
@@ -83,7 +74,6 @@ public class Review implements Serializable{
         this.rating = rating;
     }
 
-
     /**
      * @return int return the reviewID
      */
@@ -96,6 +86,12 @@ public class Review implements Serializable{
      */
     public void setReviewID(int reviewID) {
         this.reviewID = reviewID;
+    }
+
+    @Override
+    public String toString() {
+        return "Review [description=" + description + ", media=" + media + ", rating=" + rating + ", reviewID="
+                + reviewID + ", title=" + title + ", user=" + user + "]";
     }
 
 }

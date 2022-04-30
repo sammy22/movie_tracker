@@ -1,10 +1,7 @@
 package com.movietracker;
 
 import java.util.HashMap;
-import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
@@ -20,6 +17,9 @@ public class TVShow {
     String description;
 
     String posterImage;
+
+    public TVShow() {
+    }
 
     public TVShow(String seriesID, String seriesName, String description, String posterImage) {
         this.seriesID = seriesID;

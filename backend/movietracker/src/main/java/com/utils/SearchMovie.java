@@ -48,12 +48,10 @@ public class SearchMovie {
         String movieName = movieResult.getString("title");
         String description = movieResult.getString("description");
         String posterImage = movieResult.getString("image");
-        String hql = "select m from Media m where m.mediaId='"+movieId+"'";
-        System.out.println(hql);
+        String hql = "select m from Media m where m.mediaId='" + movieId + "'";
         Query q = session.createQuery(hql);
         if (q.uniqueResult() == null) {
-
-          Media media =new Media (movieId, movieName);
+          Media media = new Media(movieId, movieName);
           Movie movie = new Movie(movieId, movieName, description, posterImage);
           session.saveOrUpdate(media);
           session.saveOrUpdate(movie);
@@ -63,9 +61,10 @@ public class SearchMovie {
           movieFound.put("image", posterImage);
           movieFound.put("id", movieId);
           searchResultArray.put(movieFound);
-        }
-        else {
-          Movie m= (Movie) q.list().get(0);
+        } else {
+          String mvl = "select m from Movie m where m.movieID='" + movieId + "'";
+          Query qvl = session.createQuery(mvl);
+          Movie m = (Movie) qvl.list().get(0);
           JSONObject movieFound = new JSONObject();
           movieFound.put("title", m.getMovieName());
           movieFound.put("description", m.getDescription());

@@ -61,8 +61,6 @@ public class Signin extends HttpServlet {
         response.setStatus(HttpServletResponse.SC_OK);
         PrintWriter writer = response.getWriter();
         writer.println("success");
-        
-        // log 
         publisher.notify("User " + userDetails.getEmail() + " signed in");
 
       } else {

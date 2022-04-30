@@ -5,28 +5,28 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class MovieDetails {
-    @JsonProperty("imdbRating")
-    private String imdbRating;
-     @JsonProperty("Runtime")
-    private String runtime;
-    @JsonProperty("Language")
-    private String language;
-    @JsonProperty("Rated")
-    private String rated;
-    @JsonProperty("Released")
-    private String released;
-     @JsonProperty("Plot")
-    private String plot;
-    @JsonProperty("Director")
-    private String director;
-    @JsonProperty("Actors")
-    private String actors;
-     @JsonProperty("Awards")
-    private String awards;
-     @JsonProperty("Year")
-    private String year;
-  
-//  @JsonProperty("Genre")
+	@JsonProperty("imdbRating")
+	private String imdbRating;
+	@JsonProperty("Runtime")
+	private String runtime;
+	@JsonProperty("Language")
+	private String language;
+	@JsonProperty("Rated")
+	private String rated;
+	@JsonProperty("Released")
+	private String released;
+	@JsonProperty("Plot")
+	private String plot;
+	@JsonProperty("Director")
+	private String director;
+	@JsonProperty("Actors")
+	private String actors;
+	@JsonProperty("Awards")
+	private String awards;
+	@JsonProperty("Year")
+	private String year;
+
+	@JsonProperty("Genre")
 	private String genre;
 
 	public String getImdbRating() {
@@ -116,7 +116,5 @@ public class MovieDetails {
 	public void setGenre(String genre) {
 		this.genre = genre;
 	}
-
-   
 
 }

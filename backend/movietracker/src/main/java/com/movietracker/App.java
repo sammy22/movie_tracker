@@ -5,9 +5,6 @@ import java.util.logging.Level;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.webapp.WebAppContext;
-import jakarta.servlet.ServletContext;
-import org.eclipse.jetty.servlet.ServletContextHandler;
-
 import com.movietracker.Observer.*;
 
 /**
@@ -35,8 +32,8 @@ public class App {
         webAppContext.setAttribute(
                 "org.eclipse.jetty.server.webapp.ContainerIncludeJarPattern",
                 ".*/target/classes/|.*\\.jar");
-        
-        Publisher p  = new Publisher(); 
+
+        Publisher p = new Publisher();
 
         Log logger = Log.getInstance();
 
@@ -45,8 +42,7 @@ public class App {
         webAppContext.setAttribute(
                 "publisher",
                 p);
-        
-  
+
         // Start the server! 🚀
         server.start();
         System.out.println("Server started!");

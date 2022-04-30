@@ -2,7 +2,7 @@
 <html>
 
 <head>
-    <title>Welcome to my blog</title>
+    <title>Movie Tracker</title>
 
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width,minimum-scale=1">
@@ -64,18 +64,21 @@
                 <div class="col">
 
                     <div class="card card-body flex-fill">
-                        <img class="card-img-top" alt="..." style="width: 18rem;" src=<%=posts[i].image %> >
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                <%= posts[i].title %>
-                            </h5>
+                        <img class="card-img-top" alt="..." style="width: 18rem;" onclick="getReviews(this.id)"
+                            id=<%=posts[i].id%> src=<%=posts[i].image %>>
+                            <div class="card-body">
+                                <h5 class="card-title">
+                                    <%= posts[i].title %>
+                                </h5>
 
-                            <p class="card-text">
-                                <%= posts[i].description %>.
-                            </p>
-                            <button type="button" class="btn btn-light" onclick="addtoWatchlist(this.id)" id=<%=posts[i].id%>>Add to Watchlist</button>
-                            <button type="button" class="btn btn-dark" onclick="getDetails(this.id)" id=<%=posts[i].id%>>Details</button>
-                        </div>
+                                <p class="card-text">
+                                    <%= posts[i].description %>.
+                                </p>
+                                <button type="button" class="btn btn-light" onclick="addtoWatchlist(this.id)"
+                                    id=<%=posts[i].id%>>Add to Watchlist</button>
+                                <button type="button" class="btn btn-dark" onclick="getDetails(this.id)"
+                                    id=<%=posts[i].id%>>Details</button>
+                            </div>
                     </div>
                 </div>
                 <% } %>
@@ -96,7 +99,43 @@
                     var infoModal = $('#myModal');
                     htmldata = ''
                     Object.keys(result).forEach(function (key) {
-                        htmldata += '<p>' + key + ' : ' + result[key] + '</p><hr>'
+                        if (result[key] != 'N/A') {
+                            htmldata += '<p>' + key + ' : ' + result[key] + '</p><hr>'
+                        }
+                    })
+                    infoModal.find('.modal-body').html(htmldata);
+                    infoModal.modal('show');
+
+                },
+                error: function (result) {
+                    alert('error');
+                }
+            });
+        }
+
+
+        function getReviews(id) {
+            console.log(id)
+            console.log("id")
+            $.ajax({
+                type: "POST",
+                url: "/getReviews",
+                data: {
+                    id: id
+                },
+                success: function (result) {
+                    var infoModal = $('#myModal');
+                    htmldata = ''
+                    otherreviews = result.reviewlist
+                    if (result.hasOwnProperty('userreview')) {
+                        userreview = result.userreview
+                        htmldata += '<p>Your Review</p><hr>'
+                        htmldata += '<p> Rated: ' + userreview.rating + '</p><p> Review: ' + userreview.description + '</p><hr>'
+                    }
+                    htmldata += '<p>Other Reviews</p><hr>'
+                    Object.keys(otherreviews).forEach(function (key) {
+                        r = otherreviews[key]
+                        htmldata += '<p> Rated: ' + r.rating + '</p><p> Review: ' + r.description + '</p><hr>'
                     })
                     infoModal.find('.modal-body').html(htmldata);
                     infoModal.modal('show');

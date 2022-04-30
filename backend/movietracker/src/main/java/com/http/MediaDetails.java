@@ -35,15 +35,14 @@ public class MediaDetails extends HttpServlet {
   private Publisher publisher;
 
   @Override
-  public void init() throws ServletException
-  {
-      this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+  public void init() throws ServletException {
+    this.publisher = (Publisher) getServletContext().getAttribute("publisher");
   }
 
   @Override
   public void doPost(HttpServletRequest request, HttpServletResponse response)
       throws IOException {
-    
+
     publisher.notify("Media details post request");
 
     JSONObject reqJson;
@@ -69,7 +68,6 @@ public class MediaDetails extends HttpServlet {
       HttpResponse<String> httpresponse = client.send(httprequest, BodyHandlers.ofString());
 
       ObjectMapper objectMapper = new ObjectMapper();
-
       MovieDetails details = objectMapper.readValue(httpresponse.body().toString(), MovieDetails.class);
 
       publisher.notify("Viewed media details for media ID: " + mediaID);
@@ -83,7 +81,6 @@ public class MediaDetails extends HttpServlet {
     } catch (Exception ex) {
       System.out.println(ex);
       response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-      // respJson.put("answer", "Something bad happened");
       try (PrintWriter out = response.getWriter()) {
         out.println("Something went wrong");
         out.flush();

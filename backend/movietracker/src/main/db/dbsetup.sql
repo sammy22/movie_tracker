@@ -22,6 +22,32 @@ CREATE TABLE IF NOT EXISTS TVShow (
  posterImage VARCHAR(255),
  PRIMARY KEY (seriesID));
 
-create table WatchList( id INT NOT NULL AUTO_INCREMENT PRIMARY KEY,mediaId VARCHAR(255) NOT NULL FORIEGN KEY, email VARCHAR(255) NOT NULL FORIEGN KEY );
+create table WatchList( 
+    id INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+    mediaId VARCHAR(255) NOT NULL , 
+    email VARCHAR(255) NOT NULL ,
+    FOREIGN KEY(mediaId) REFERENCES Media(MediaId), 
+    FOREIGN KEY(email) REFERENCES User(email) 
+    );
 
-create table Media( mediaId VARCHAR(255) NOT NULL PRIMARY KEY, mediaName VARCHAR(255) NOT NULL);
+create table Media( 
+    mediaId VARCHAR(255) NOT NULL PRIMARY KEY, 
+    mediaName VARCHAR(255) NOT NULL);
+
+create table Review( 
+    reviewID INT NOT NULL AUTO_INCREMENT PRIMARY KEY,
+    mediaId VARCHAR(255) NOT NULL FOREIGN KEY, 
+    email VARCHAR(255) NOT NULL FOREIGN KEY,
+    title VARCHAR(255) NOT NULL, 
+    Description VARCHAR(255) NOT NULL,
+    rating DOUBLE(2,2) NOT NULL  );
+
+create table Review( 
+    reviewID INT NOT NULL AUTO_INCREMENT PRIMARY KEY, 
+    mediaId VARCHAR(255) NOT NULL , 
+    email VARCHAR(255) NOT NULL ,
+    title VARCHAR(255) NOT NULL, 
+    Description VARCHAR(255) NOT NULL,
+    rating DOUBLE(2,2) NOT NULL,
+    FOREIGN KEY(mediaId) REFERENCES Media(MediaId), 
+    FOREIGN KEY(email) REFERENCES User(email) );

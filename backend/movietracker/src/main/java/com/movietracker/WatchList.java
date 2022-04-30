@@ -1,13 +1,12 @@
 package com.movietracker;
 
 import java.io.Serializable;
-import java.util.Set;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "WatchList")
-public class WatchList implements Serializable{
+public class WatchList implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -17,14 +16,13 @@ public class WatchList implements Serializable{
     @JoinColumn(name = "email")
     private User user;
 
-  
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "mediaId")
     private Media media;
 
-    public WatchList( User user, Media media){
-        this.user=user;
-        this.media= media;
+    public WatchList(User user, Media media) {
+        this.user = user;
+        this.media = media;
     }
 
     public User getUser() {
@@ -43,5 +41,4 @@ public class WatchList implements Serializable{
         this.media = media;
     }
 
-	
 }

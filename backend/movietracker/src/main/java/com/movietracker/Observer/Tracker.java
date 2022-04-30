@@ -21,7 +21,7 @@ public class Tracker extends Consumer {
 
     @Override
     public void update(String m) {
-        
+
     }
 
     public void printSummary() {

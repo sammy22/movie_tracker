@@ -1,6 +1,5 @@
 package com.movietracker;
 
-
 import javax.persistence.Entity;
 
 import javax.persistence.Id;
@@ -15,9 +14,8 @@ public class Media {
 
     private String mediaName;
 
-
-    public Media(){}
- 
+    public Media() {
+    }
 
     public String getMediaId() {
         return mediaId;
@@ -34,13 +32,11 @@ public class Media {
     public Media(String mediaId, String mediaName) {
         this.mediaId = mediaId;
         this.mediaName = mediaName;
-        
+
     }
 
     public String getMediaName() {
         return this.mediaName;
     }
-
-
 
 }

@@ -25,8 +25,6 @@ import com.movietracker.Observer.*;
 
 import java.util.logging.Level;
 
-
-
 // Code from https://happycoding.io/tutorials/java-server/post
 
 @WebServlet("/addreview")
@@ -34,9 +32,8 @@ public class AddReview extends HttpServlet {
   private Publisher publisher;
 
   @Override
-  public void init() throws ServletException
-  {
-      this.publisher = (Publisher) getServletContext().getAttribute("publisher");
+  public void init() throws ServletException {
+    this.publisher = (Publisher) getServletContext().getAttribute("publisher");
   }
 
   @Override
@@ -57,17 +54,14 @@ public class AddReview extends HttpServlet {
       reqJson = (JSONObject) parser.parse(reqReader);
       String mediaId = (String) reqJson.get("mediaid");
       String email = (String) reqJson.get("email");
-      double rating = (double) reqJson.get("rating");
+      double rating = (Double) reqJson.get("rating");
       String title = (String) reqJson.get("title");
       String desc = (String) reqJson.get("description");
 
+      publisher.notify("Adding review for " + mediaId + " to  " + email);
 
-      publisher.notify("Adding review for " + mediaId +" to  " + email);
-      
-      String hql = "select r from Review r where r.email = :email and r.mediaId=:mediaId";
+      String hql = "select * from Review r where r.email = '" + email + "' and r.mediaId='" + mediaId + "'";
       Query q = session.createSQLQuery(hql);
-      q.setParameter("email", email);
-      q.setParameter("mediaId", mediaId);
 
       if (q.uniqueResult() != null) {
         Review r = (Review) q.uniqueResult();
@@ -76,39 +70,32 @@ public class AddReview extends HttpServlet {
         r.setRating(rating);
         session.saveOrUpdate(r);
         respJson.put("successmsg", "Review updated successfully");
-        
-      }
-      else {
-        
-        String hql1 = "select  u from User u where u.email ='"+email+"'";
+
+      } else {
+        String hql1 = "select  u from User u where u.email ='" + email + "'";
         Query q1 = session.createQuery(hql1);
-        // q1.setParameter("email", email);
-        System.out.println(q1.uniqueResult().toString());
-        if(q1.list().size()==0){
+        if (q1.list().size() == 0) {
           respJson.put("msg", "user doesn't exist");
           throw new Exception("User not found");
         }
 
-        User user = (User) q1.list().get(0);  
-        String hql2 = "select m from Media m where m.mediaId='"+mediaId+"'";
-        System.out.println(hql2);
+        User user = (User) q1.list().get(0);
+        String hql2 = "select m from Media m where m.mediaId='" + mediaId + "'";
         Query q2 = session.createQuery(hql2);
 
-        if(q2.list().size()==0){
+        if (q2.list().size() == 0) {
           respJson.put("msg", "mediaId doesn't exist");
           throw new Exception("ID not found");
         }
 
-        Media media= (Media) q2.list().get(0);
-        System.out.print("tests");
+        Media media = (Media) q2.list().get(0);
+
         Review r = new Review(user, media, title, desc, rating);
+        System.out.println(r.toString());
         session.saveOrUpdate(r);
-        System.out.println("save");
         respJson.put("successmsg", "Review added successfully");
 
       }
-      
-      
 
     } catch (Exception ex) {
       System.out.println(ex);
